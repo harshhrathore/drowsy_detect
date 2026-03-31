@@ -357,101 +357,21 @@ self.eye_closed_threshold = 45  # Decrease from 60 (more sensitive)
 
 ## 🎓 Computer Vision Concepts Applied
 
-This project demonstrates practical application of the following concepts from the Computer Vision course syllabus:
+This project demonstrates **11 core Computer Vision techniques** from the course syllabus:
 
 ### **Module 1: Digital Image Formation & Low Level Processing**
 
-#### ✅ **Image Transformation**
-- **Implementation:** Color space conversion from BGR to Grayscale
-- **Code Location:** `simple_detector.py` - Line 123
-- **Purpose:** Grayscale images simplify processing and improve detection speed
+| Technique | Implementation | Code Location |
+|-----------|----------------|---------------|
+| **Image Transformation** | BGR to Grayscale conversion | `simple_detector.py:123` |
+| **Histogram Processing** | Variance & mean intensity analysis for yawn detection | `simple_detector.py:107-108` |
+| **Convolution & Filtering** | Haar Cascade rectangular features | Implicit in `detectMultiScale()` |
+
 ```python
 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+variance = np.var(mouth_region)
+mean_intensity = np.mean(mouth_region)
 ```
-
-#### ✅ **Histogram Processing**
-- **Implementation:** Statistical analysis of pixel intensity distributions
-- **Code Location:** `simple_detector.py` - Lines 107-108
-- **Purpose:** Analyze mouth region darkness and texture variation for yawn detection
-```python
-variance = np.var(mouth_region)      # Texture variation
-mean_intensity = np.mean(mouth_region)  # Average brightness
-```
-
-#### ✅ **Convolution and Filtering**
-- **Implementation:** Haar Cascade classifiers use convolution-based rectangular features
-- **Code Location:** Implicit in `cv2.CascadeClassifier.detectMultiScale()`
-- **Purpose:** Detect faces and eyes through learned convolution filters
 
 ---
 
-### **Module 3: Feature Extraction & Image Segmentation**
-
-#### ✅ **Object Detection**
-- **Implementation:** Haar Cascade-based face and eye detection
-- **Code Location:** `simple_detector.py` - Lines 11-12, 124, 145
-- **Purpose:** Locate faces and eyes in video frames
-```python
-faces = self.face_cascade.detectMultiScale(gray, 1.1, 4)
-eyes = self.eye_cascade.detectMultiScale(face_roi, scaleFactor=1.05, minNeighbors=2)
-```
-
-#### ✅ **Scale-Space Analysis**
-- **Implementation:** Multi-scale object detection using image pyramids
-- **Code Location:** `simple_detector.py` - Line 85 (`scaleFactor` parameter)
-- **Purpose:** Detect faces/eyes at different sizes and distances
-```python
-scaleFactor=1.05  # Creates image pyramid for multi-scale detection
-```
-
-#### ✅ **Region-Based Segmentation (ROI Extraction)**
-- **Implementation:** Extracting and analyzing specific facial regions
-- **Code Location:** `simple_detector.py` - Lines 143, 103
-- **Purpose:** Focus processing on relevant areas (face, mouth)
-```python
-face_roi = gray[y:y+h, x:x+w]  # Extract face region
-mouth_region = gray_face[int(height*0.65):int(height*0.9), ...]  # Extract mouth region
-```
-
-#### ✅ **Edge-Based Features**
-- **Implementation:** Haar-like features (edge, line, center-surround)
-- **Code Location:** Implicit in Haar Cascade classifiers
-- **Purpose:** Detect facial features using edge-based rectangular features
-
----
-
-### **Module 4: Pattern Analysis & Motion Analysis**
-
-#### ✅ **Supervised Classification**
-- **Implementation:** Pre-trained Haar Cascade classifiers
-- **Code Location:** `simple_detector.py` - Lines 11-12
-- **Purpose:** Classify image regions as face/non-face, eye/non-eye
-- **Training:** Classifiers trained on thousands of positive and negative samples
-
-#### ✅ **Binary Classification**
-- **Implementation:** Drowsy vs Alert state classification
-- **Code Location:** `simple_detector.py` - Lines 175-182
-- **Purpose:** Classify driver state based on temporal features
-```python
-if self.eye_closed_counter >= 60:  # 2 seconds
-    drowsy_detected = True  # Classify as DROWSY
-else:
-    drowsy_detected = False  # Classify as ALERT
-```
-
-#### ✅ **Spatio-Temporal Analysis**
-- **Implementation:** Tracking eye state across consecutive frames
-- **Code Location:** `simple_detector.py` - Lines 18-21, 151-165
-- **Purpose:** Analyze temporal patterns to distinguish blinking from drowsiness
-```python
-self.eye_closed_counter += 1  # Temporal tracking
-eye_closed_seconds = self.eye_closed_counter / 30.0  # Time conversion
-```
-
-#### ✅ **Temporal Filtering**
-- **Implementation:** Frame-based counter with threshold
-- **Code Location:** `simple_detector.py` - Lines 18-21
-- **Purpose:** Filter out short-duration events (normal blinking)
-- **Mechanism:** Only trigger alert if eyes closed for 60+ consecutive frames (2 seconds)
-
----
