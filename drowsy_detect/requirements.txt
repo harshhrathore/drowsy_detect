@@ -1,0 +1,10 @@
+opencv-python>=4.9.0.80
+# dlib==19.24.2
+numpy>=1.26.0
+pygame>=2.5.2
+scipy>=1.11.4
+imutils>=0.5.4
+tensorflow>=2.16.1
+scikit-learn>=1.4.0
+Pillow>=10.2.0
+streamlit>=1.28.0
