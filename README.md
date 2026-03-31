@@ -359,7 +359,7 @@ self.eye_closed_threshold = 45  # Decrease from 60 (more sensitive)
 
 This project demonstrates **11 core Computer Vision techniques** from the course syllabus:
 
-### **Module 1: Digital Image Formation & Low Level Processing**
+### **Digital Image Formation & Low Level Processing**
 
 | Technique | Implementation | Code Location |
 |-----------|----------------|---------------|
@@ -375,3 +375,36 @@ mean_intensity = np.mean(mouth_region)
 
 ---
 
+### **Feature Extraction & Image Segmentation**
+
+| Technique | Implementation | Code Location |
+|-----------|----------------|---------------|
+| **Object Detection** | Haar Cascade face/eye detection | `simple_detector.py:11-12, 124, 145` |
+| **Scale-Space Analysis** | Multi-scale detection via image pyramids | `scaleFactor=1.05` parameter |
+| **ROI Segmentation** | Face and mouth region extraction | `simple_detector.py:143, 103` |
+| **Edge-Based Features** | Haar-like edge features | Implicit in Haar Cascades |
+
+```python
+faces = self.face_cascade.detectMultiScale(gray, 1.1, 4)
+eyes = self.eye_cascade.detectMultiScale(face_roi, scaleFactor=1.05, minNeighbors=2)
+face_roi = gray[y:y+h, x:x+w]
+```
+
+---
+
+### **Pattern Analysis & Motion Analysis**
+
+| Technique | Implementation | Code Location |
+|-----------|----------------|---------------|
+| **Supervised Classification** | Pre-trained Haar Cascade classifiers | `simple_detector.py:11-12` |
+| **Binary Classification** | Drowsy vs Alert state classification | `simple_detector.py:175-182` |
+| **Spatio-Temporal Analysis** | Frame-based eye state tracking | `simple_detector.py:18-21, 151-165` |
+| **Temporal Filtering** | Counter threshold (60 frames = 2 sec) | `simple_detector.py:18-21` |
+
+```python
+self.eye_closed_counter += 1  # Temporal tracking
+if self.eye_closed_counter >= 60:  # Temporal filtering
+    drowsy_detected = True  # Binary classification
+```
+
+---
