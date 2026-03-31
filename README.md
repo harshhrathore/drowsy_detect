@@ -4,20 +4,6 @@ A computer vision-based driver drowsiness detection system that monitors facial 
 
 ---
 
-## 📋 Table of Contents
-
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [System Requirements](#system-requirements)
-- [Installation Guide](#installation-guide)
-- [How to Run](#how-to-run)
-- [Project Structure](#project-structure)
-- [Technical Implementation](#technical-implementation)
-- [Testing and Performance](#testing-and-performance)
-- [Computer Vision Concepts Applied](#computer-vision-concepts-applied)
-
----
-
 ## 🎯 Project Overview
 
 This system uses OpenCV's Haar Cascade classifiers to detect facial features and monitor driver alertness in real-time. When drowsiness is detected (eyes closed for 2+ seconds or yawning), it triggers continuous audio alerts and visual warnings.
@@ -203,7 +189,7 @@ drowsy_detect/
 ├── streamlit_app.py            # Web interface (Streamlit dashboard)
 ├── alert_system.py             # Audio alert generation
 ├── requirements.txt            # Python dependencies
-└── README.md                 
+README.md                 
 ```
 
 ---
