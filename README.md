@@ -7,7 +7,6 @@ A computer vision-based driver drowsiness detection system that monitors facial 
 ## 📋 Table of Contents
 
 - [Project Overview](#project-overview)
-- [Computer Vision Concepts Applied](#computer-vision-concepts-applied)
 - [Features](#features)
 - [System Requirements](#system-requirements)
 - [Installation Guide](#installation-guide)
@@ -15,7 +14,7 @@ A computer vision-based driver drowsiness detection system that monitors facial 
 - [Project Structure](#project-structure)
 - [Technical Implementation](#technical-implementation)
 - [Testing and Performance](#testing-and-performance)
-- [Troubleshooting](#troubleshooting)
+- [Computer Vision Concepts Applied](#computer-vision-concepts-applied)
 
 ---
 
@@ -29,127 +28,6 @@ This system uses OpenCV's Haar Cascade classifiers to detect facial features and
 - Temporal filtering to prevent false alarms
 - Cross-platform compatibility (Windows, Linux, macOS)
 - Multiple interface options (Desktop, Web, Debug)
-
----
-
-## 🎓 Computer Vision Concepts Applied
-
-This project demonstrates practical application of the following concepts from the Computer Vision course syllabus:
-
-### **Module 1: Digital Image Formation & Low Level Processing**
-
-#### ✅ **Image Transformation**
-- **Implementation:** Color space conversion from BGR to Grayscale
-- **Code Location:** `simple_detector.py` - Line 123
-- **Purpose:** Grayscale images simplify processing and improve detection speed
-```python
-gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-```
-
-#### ✅ **Histogram Processing**
-- **Implementation:** Statistical analysis of pixel intensity distributions
-- **Code Location:** `simple_detector.py` - Lines 107-108
-- **Purpose:** Analyze mouth region darkness and texture variation for yawn detection
-```python
-variance = np.var(mouth_region)      # Texture variation
-mean_intensity = np.mean(mouth_region)  # Average brightness
-```
-
-#### ✅ **Convolution and Filtering**
-- **Implementation:** Haar Cascade classifiers use convolution-based rectangular features
-- **Code Location:** Implicit in `cv2.CascadeClassifier.detectMultiScale()`
-- **Purpose:** Detect faces and eyes through learned convolution filters
-
----
-
-### **Module 3: Feature Extraction & Image Segmentation**
-
-#### ✅ **Object Detection**
-- **Implementation:** Haar Cascade-based face and eye detection
-- **Code Location:** `simple_detector.py` - Lines 11-12, 124, 145
-- **Purpose:** Locate faces and eyes in video frames
-```python
-faces = self.face_cascade.detectMultiScale(gray, 1.1, 4)
-eyes = self.eye_cascade.detectMultiScale(face_roi, scaleFactor=1.05, minNeighbors=2)
-```
-
-#### ✅ **Scale-Space Analysis**
-- **Implementation:** Multi-scale object detection using image pyramids
-- **Code Location:** `simple_detector.py` - Line 85 (`scaleFactor` parameter)
-- **Purpose:** Detect faces/eyes at different sizes and distances
-```python
-scaleFactor=1.05  # Creates image pyramid for multi-scale detection
-```
-
-#### ✅ **Region-Based Segmentation (ROI Extraction)**
-- **Implementation:** Extracting and analyzing specific facial regions
-- **Code Location:** `simple_detector.py` - Lines 143, 103
-- **Purpose:** Focus processing on relevant areas (face, mouth)
-```python
-face_roi = gray[y:y+h, x:x+w]  # Extract face region
-mouth_region = gray_face[int(height*0.65):int(height*0.9), ...]  # Extract mouth region
-```
-
-#### ✅ **Edge-Based Features**
-- **Implementation:** Haar-like features (edge, line, center-surround)
-- **Code Location:** Implicit in Haar Cascade classifiers
-- **Purpose:** Detect facial features using edge-based rectangular features
-
----
-
-### **Module 4: Pattern Analysis & Motion Analysis**
-
-#### ✅ **Supervised Classification**
-- **Implementation:** Pre-trained Haar Cascade classifiers
-- **Code Location:** `simple_detector.py` - Lines 11-12
-- **Purpose:** Classify image regions as face/non-face, eye/non-eye
-- **Training:** Classifiers trained on thousands of positive and negative samples
-
-#### ✅ **Binary Classification**
-- **Implementation:** Drowsy vs Alert state classification
-- **Code Location:** `simple_detector.py` - Lines 175-182
-- **Purpose:** Classify driver state based on temporal features
-```python
-if self.eye_closed_counter >= 60:  # 2 seconds
-    drowsy_detected = True  # Classify as DROWSY
-else:
-    drowsy_detected = False  # Classify as ALERT
-```
-
-#### ✅ **Spatio-Temporal Analysis**
-- **Implementation:** Tracking eye state across consecutive frames
-- **Code Location:** `simple_detector.py` - Lines 18-21, 151-165
-- **Purpose:** Analyze temporal patterns to distinguish blinking from drowsiness
-```python
-self.eye_closed_counter += 1  # Temporal tracking
-eye_closed_seconds = self.eye_closed_counter / 30.0  # Time conversion
-```
-
-#### ✅ **Temporal Filtering**
-- **Implementation:** Frame-based counter with threshold
-- **Code Location:** `simple_detector.py` - Lines 18-21
-- **Purpose:** Filter out short-duration events (normal blinking)
-- **Mechanism:** Only trigger alert if eyes closed for 60+ consecutive frames (2 seconds)
-
----
-
-### **Summary of CV Techniques Used**
-
-| Syllabus Module | Technique | Implementation |
-|-----------------|-----------|----------------|
-| **Module 1** | Image Transformation | BGR to Grayscale conversion |
-| **Module 1** | Histogram Processing | Variance and mean intensity analysis |
-| **Module 1** | Convolution & Filtering | Haar Cascade features |
-| **Module 3** | Object Detection | Face and eye detection |
-| **Module 3** | Scale-Space Analysis | Multi-scale detection with image pyramids |
-| **Module 3** | ROI-Based Segmentation | Face and mouth region extraction |
-| **Module 3** | Edge-Based Features | Haar-like rectangular features |
-| **Module 4** | Supervised Classification | Pre-trained Haar Cascades |
-| **Module 4** | Binary Classification | Drowsy/Alert state classification |
-| **Module 4** | Spatio-Temporal Analysis | Frame-based temporal tracking |
-| **Module 4** | Temporal Filtering | Counter-based event filtering |
-
-**Total: 11 Computer Vision techniques from course syllabus**
 
 ---
 
@@ -190,7 +68,7 @@ eye_closed_seconds = self.eye_closed_counter / 30.0  # Time conversion
 
 ```bash
 # If using git
-git clone <repository-url>
+git clone https://github.com/harshhrathore/drowsy_detect
 cd drowsiness-detection
 
 # Or download and extract the ZIP file
@@ -318,19 +196,14 @@ python test_detector.py
 ## 📁 Project Structure
 
 ```
-drowsiness-detection/
+drowsy_detect/
 │
 ├── simple_detector.py          # Core detection engine (Haar Cascades)
 ├── simple_main.py              # Desktop application (OpenCV GUI)
 ├── streamlit_app.py            # Web interface (Streamlit dashboard)
-├── debug_main.py               # Debug version with detailed logging
-├── test_detector.py            # Automated testing framework
 ├── alert_system.py             # Audio alert generation
 ├── requirements.txt            # Python dependencies
-├── README.md                   # This file
-├── TESTING_REPORT.md           # Comprehensive testing documentation
-├── PERFORMANCE_METRICS.md      # Performance analysis and metrics
-└── STATUS_REPORT.md            # Project status and setup guide
+└── README.md                 
 ```
 
 ---
@@ -496,60 +369,123 @@ self.eye_closed_threshold = 45  # Decrease from 60 (more sensitive)
 
 ---
 
-## 🎓 Educational Value
+## 🎓 Computer Vision Concepts Applied
 
-### Learning Outcomes Demonstrated
+This project demonstrates practical application of the following concepts from the Computer Vision course syllabus:
 
-1. **Image Processing:** Understanding color spaces, transformations, and filtering
-2. **Feature Detection:** Implementing object detection using Haar Cascades
-3. **Temporal Analysis:** Tracking features across video frames
-4. **Classification:** Binary classification for state detection
-5. **Real-time Processing:** Achieving 30 FPS performance requirements
-6. **System Integration:** Combining CV, audio, and UI components
+### **Module 1: Digital Image Formation & Low Level Processing**
 
-### Computer Vision Concepts Reinforced
+#### ✅ **Image Transformation**
+- **Implementation:** Color space conversion from BGR to Grayscale
+- **Code Location:** `simple_detector.py` - Line 123
+- **Purpose:** Grayscale images simplify processing and improve detection speed
+```python
+gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+```
 
-- Multi-scale object detection
-- Region of Interest (ROI) processing
-- Histogram-based analysis
-- Temporal filtering for noise reduction
-- Supervised learning (pre-trained classifiers)
-- Real-time video processing pipeline
+#### ✅ **Histogram Processing**
+- **Implementation:** Statistical analysis of pixel intensity distributions
+- **Code Location:** `simple_detector.py` - Lines 107-108
+- **Purpose:** Analyze mouth region darkness and texture variation for yawn detection
+```python
+variance = np.var(mouth_region)      # Texture variation
+mean_intensity = np.mean(mouth_region)  # Average brightness
+```
 
----
-
-## 📚 Additional Resources
-
-### Documentation Files
-
-- **TESTING_REPORT.md:** Comprehensive testing methodology and results
-- **PERFORMANCE_METRICS.md:** Detailed performance analysis
-- **STATUS_REPORT.md:** Quick setup guide and status
-
-### Key References
-
-- OpenCV Haar Cascade Documentation
-- Real-time Face Detection Papers
-- Driver Drowsiness Detection Research
+#### ✅ **Convolution and Filtering**
+- **Implementation:** Haar Cascade classifiers use convolution-based rectangular features
+- **Code Location:** Implicit in `cv2.CascadeClassifier.detectMultiScale()`
+- **Purpose:** Detect faces and eyes through learned convolution filters
 
 ---
 
-## 🎯 Usage Guidelines
+### **Module 3: Feature Extraction & Image Segmentation**
 
-### For Best Results:
+#### ✅ **Object Detection**
+- **Implementation:** Haar Cascade-based face and eye detection
+- **Code Location:** `simple_detector.py` - Lines 11-12, 124, 145
+- **Purpose:** Locate faces and eyes in video frames
+```python
+faces = self.face_cascade.detectMultiScale(gray, 1.1, 4)
+eyes = self.eye_cascade.detectMultiScale(face_roi, scaleFactor=1.05, minNeighbors=2)
+```
 
-1. **Lighting:** Use in well-lit environment (100+ lux minimum)
-2. **Position:** Sit 30-60cm from camera, face centered
-3. **Angle:** Keep face within ±15° of frontal view
-4. **Accessories:** Remove sunglasses for optimal detection
-5. **Background:** Avoid strong backlighting
+#### ✅ **Scale-Space Analysis**
+- **Implementation:** Multi-scale object detection using image pyramids
+- **Code Location:** `simple_detector.py` - Line 85 (`scaleFactor` parameter)
+- **Purpose:** Detect faces/eyes at different sizes and distances
+```python
+scaleFactor=1.05  # Creates image pyramid for multi-scale detection
+```
 
-### Safety Notice:
+#### ✅ **Region-Based Segmentation (ROI Extraction)**
+- **Implementation:** Extracting and analyzing specific facial regions
+- **Code Location:** `simple_detector.py` - Lines 143, 103
+- **Purpose:** Focus processing on relevant areas (face, mouth)
+```python
+face_roi = gray[y:y+h, x:x+w]  # Extract face region
+mouth_region = gray_face[int(height*0.65):int(height*0.9), ...]  # Extract mouth region
+```
 
-This system is a **safety assistance tool**, not a replacement for:
-- Adequate rest before driving
-- Regular breaks during long drives
-- Proper sleep hygiene
-- Medical attention for chronic fatigue
+#### ✅ **Edge-Based Features**
+- **Implementation:** Haar-like features (edge, line, center-surround)
+- **Code Location:** Implicit in Haar Cascade classifiers
+- **Purpose:** Detect facial features using edge-based rectangular features
+
+---
+
+### **Module 4: Pattern Analysis & Motion Analysis**
+
+#### ✅ **Supervised Classification**
+- **Implementation:** Pre-trained Haar Cascade classifiers
+- **Code Location:** `simple_detector.py` - Lines 11-12
+- **Purpose:** Classify image regions as face/non-face, eye/non-eye
+- **Training:** Classifiers trained on thousands of positive and negative samples
+
+#### ✅ **Binary Classification**
+- **Implementation:** Drowsy vs Alert state classification
+- **Code Location:** `simple_detector.py` - Lines 175-182
+- **Purpose:** Classify driver state based on temporal features
+```python
+if self.eye_closed_counter >= 60:  # 2 seconds
+    drowsy_detected = True  # Classify as DROWSY
+else:
+    drowsy_detected = False  # Classify as ALERT
+```
+
+#### ✅ **Spatio-Temporal Analysis**
+- **Implementation:** Tracking eye state across consecutive frames
+- **Code Location:** `simple_detector.py` - Lines 18-21, 151-165
+- **Purpose:** Analyze temporal patterns to distinguish blinking from drowsiness
+```python
+self.eye_closed_counter += 1  # Temporal tracking
+eye_closed_seconds = self.eye_closed_counter / 30.0  # Time conversion
+```
+
+#### ✅ **Temporal Filtering**
+- **Implementation:** Frame-based counter with threshold
+- **Code Location:** `simple_detector.py` - Lines 18-21
+- **Purpose:** Filter out short-duration events (normal blinking)
+- **Mechanism:** Only trigger alert if eyes closed for 60+ consecutive frames (2 seconds)
+
+---
+
+### **Summary of CV Techniques Used**
+
+| Syllabus Module | Technique | Implementation |
+|-----------------|-----------|----------------|
+| **Module 1** | Image Transformation | BGR to Grayscale conversion |
+| **Module 1** | Histogram Processing | Variance and mean intensity analysis |
+| **Module 1** | Convolution & Filtering | Haar Cascade features |
+| **Module 3** | Object Detection | Face and eye detection |
+| **Module 3** | Scale-Space Analysis | Multi-scale detection with image pyramids |
+| **Module 3** | ROI-Based Segmentation | Face and mouth region extraction |
+| **Module 3** | Edge-Based Features | Haar-like rectangular features |
+| **Module 4** | Supervised Classification | Pre-trained Haar Cascades |
+| **Module 4** | Binary Classification | Drowsy/Alert state classification |
+| **Module 4** | Spatio-Temporal Analysis | Frame-based temporal tracking |
+| **Module 4** | Temporal Filtering | Counter-based event filtering |
+
+**Total: 11 Computer Vision techniques from course syllabus**
 
 ---
